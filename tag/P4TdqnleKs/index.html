@@ -66,8 +66,8 @@
       </h2>
       <div class="mb-4 text-xs text-gray-500">2020-03-14</div>
       <div class="mb-4 text-gray-500 dark:text-gray-300">
-        <h2 id="overview">Overview</h2>
-<p>由于GPU设备Memory的限制, 当前视觉任务模型中, 输入图像的尺寸较小. 这限制了模型性能, 本文提出了一种通过图像压缩的方法, 来增大深度神经网络实际的输入图像尺寸的方法. 具体实现是在频率域上对图像进行频域变换, 然后将图像的频域特征输入给神经网络. 然后使用了一种结合了重参数化方法的SE block的模块自适应地学习哪些频率对于特定的视觉任务比较有效. 最后, 基于在数据集层面的统计特征, 选出最有效的 N个频率, 丢掉其余频率的数据, 实现对输入数据的压缩, 并且不会有性能损失. 文章展示并验证了通过压缩的方法将输入图像的尺寸变大, 从而实现最终性能提升的思路.</p>
+        <h2 id="highlight">Highlight</h2>
+<p>通过压缩神经网络的输入, 增大输入图片的尺寸, 从而提升视觉任务的性能.</p>
 
       </div>
       <a href="https://www.zhe-zhang.com/paper-reading/post/20200314-learning-in-the-frequency-domain-cvpr-2020/" class="btn">
