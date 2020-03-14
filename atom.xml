@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.zhe-zhang.com/paper-reading</id>
     <title>Paper Reading</title>
-    <updated>2020-03-14T07:20:26.689Z</updated>
+    <updated>2020-03-14T07:32:37.937Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://www.zhe-zhang.com/paper-reading"/>
     <link rel="self" href="https://www.zhe-zhang.com/paper-reading/atom.xml"/>
@@ -16,18 +16,13 @@
         <link href="https://www.zhe-zhang.com/paper-reading/post/20200314-learning-in-the-frequency-domain-cvpr-2020/">
         </link>
         <updated>2020-03-14T05:36:54.000Z</updated>
-        <summary type="html"><![CDATA[<p>文章链接: <a href="https://arxiv.org/abs/2002.12416">arXiv</a><br>
-代码链接: <a href="https://github.com/calmevtime/DCTNet">GitHub</a><br>
-作者信息:</p>
-<blockquote>
-<p>Kai Xu, Minghai Qin, Fei Sun, Yuhao Wang, Yen-Kuang Chen, Fengbo Ren<br>
-DAMO Academy, Alibaba Group<br>
-Arizona State University</p>
-</blockquote>
-<h2 id="overview">Overview</h2>
+        <summary type="html"><![CDATA[<h2 id="overview">Overview</h2>
 <p>由于GPU设备Memory的限制, 当前视觉任务模型中, 输入图像的尺寸较小. 这限制了模型性能, 本文提出了一种通过图像压缩的方法, 来增大深度神经网络实际的输入图像尺寸的方法. 具体实现是在频率域上对图像进行频域变换, 然后将图像的频域特征输入给神经网络. 然后使用了一种结合了重参数化方法的SE block的模块自适应地学习哪些频率对于特定的视觉任务比较有效. 最后, 基于在数据集层面的统计特征, 选出最有效的 N个频率, 丢掉其余频率的数据, 实现对输入数据的压缩, 并且不会有性能损失. 文章展示并验证了通过压缩的方法将输入图像的尺寸变大, 从而实现最终性能提升的思路.</p>
 ]]></summary>
-        <content type="html"><![CDATA[<p>文章链接: <a href="https://arxiv.org/abs/2002.12416">arXiv</a><br>
+        <content type="html"><![CDATA[<h2 id="overview">Overview</h2>
+<p>由于GPU设备Memory的限制, 当前视觉任务模型中, 输入图像的尺寸较小. 这限制了模型性能, 本文提出了一种通过图像压缩的方法, 来增大深度神经网络实际的输入图像尺寸的方法. 具体实现是在频率域上对图像进行频域变换, 然后将图像的频域特征输入给神经网络. 然后使用了一种结合了重参数化方法的SE block的模块自适应地学习哪些频率对于特定的视觉任务比较有效. 最后, 基于在数据集层面的统计特征, 选出最有效的 N个频率, 丢掉其余频率的数据, 实现对输入数据的压缩, 并且不会有性能损失. 文章展示并验证了通过压缩的方法将输入图像的尺寸变大, 从而实现最终性能提升的思路.</p>
+<!-- more -->
+<p>文章链接: <a href="https://arxiv.org/abs/2002.12416">arXiv</a><br>
 代码链接: <a href="https://github.com/calmevtime/DCTNet">GitHub</a><br>
 作者信息:</p>
 <blockquote>
@@ -35,9 +30,6 @@ Arizona State University</p>
 DAMO Academy, Alibaba Group<br>
 Arizona State University</p>
 </blockquote>
-<h2 id="overview">Overview</h2>
-<p>由于GPU设备Memory的限制, 当前视觉任务模型中, 输入图像的尺寸较小. 这限制了模型性能, 本文提出了一种通过图像压缩的方法, 来增大深度神经网络实际的输入图像尺寸的方法. 具体实现是在频率域上对图像进行频域变换, 然后将图像的频域特征输入给神经网络. 然后使用了一种结合了重参数化方法的SE block的模块自适应地学习哪些频率对于特定的视觉任务比较有效. 最后, 基于在数据集层面的统计特征, 选出最有效的 N个频率, 丢掉其余频率的数据, 实现对输入数据的压缩, 并且不会有性能损失. 文章展示并验证了通过压缩的方法将输入图像的尺寸变大, 从而实现最终性能提升的思路.</p>
-<!-- more -->
 <h2 id="method">Method</h2>
 <h3 id="data-pre-processing-in-the-frequency-domain">Data Pre-processing in the Frequency Domain</h3>
 <p><img src="https://www.zhe-zhang.com/paper-reading/post-images/1584167531663.png" alt="PreparingInput" loading="lazy"><br>
@@ -50,12 +42,12 @@ Arizona State University</p>
 <li>最后, 基于预计算的整个数据集统计的均值和方差去normalize每一张图</li>
 </ul>
 <h3 id="learning-based-frequency-channel-selection">Learning-based Frequency Channel Selection</h3>
-<p><img src="https://www.zhe-zhang.com/paper-reading/post-images/1584168809346.png" alt="" loading="lazy"><br>
+<p><img src="https://www.zhe-zhang.com/paper-reading/post-images/1584168809346.png" alt="" width="400" height="1" loading="lazy"><br>
 由于selection这个操作不可微, 这里使用了Gumbel Trick对selection的操作进行重参数化, 使得操作变得可微分. 该操作在NAS等领域已有很多应用, 这里就不详细说了.<br>
 需要注意的是由<code>Tensor 3</code>变为<code>Tensor 4</code>的时候, 乘以了两个可学习的参数, 来确定某一个channel保留的概率, 经过与作者确认, 这里使用一个参数也是可以实现的.<br>
 最后, loss中也加入了channel selection 的约束, 鼓励网络丢掉channel, 避免出现大量全都保留的情况.</p>
 <h3 id="static-frequency-channel-selection">Static Frequency Channel Selection</h3>
-<p><img src="https://www.zhe-zhang.com/paper-reading/post-images/1584169150720.png" alt="" loading="lazy"><br>
+<p><img src="https://www.zhe-zhang.com/paper-reading/post-images/1584169150720.png" alt="" width="500" height="1" loading="lazy"><br>
 在输入是full channel的情况下, 训练得到模型, 然后在整个数据集上统计得到所有channel保留的概率, 得到以上的Heatmap. 可以发现:</p>
 <ul>
 <li>保留的channel基本都是低频的</li>
@@ -64,47 +56,10 @@ Arizona State University</p>
 </ul>
 <h3 id="experiment-results">Experiment Results</h3>
 <p><img src="https://www.zhe-zhang.com/paper-reading/post-images/1584169474438.png" alt="" loading="lazy"><br>
-对比1,3行, 当输入是DCT-192时, Top-1提升了约 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>0.3</mn><mi mathvariant="normal">%</mi></mrow><annotation encoding="application/x-tex">0.3\%</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.80556em;vertical-align:-0.05556em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">3</span><span class="mord">%</span></span></span></span>, 文中没有对此的分析, 我个人猜测是因为DCT作为一种手工设计的特征, 在这个任务中取得了比学习的方法的更好的效果. 理论上来说, 自深度网络开始流行以来, 大家都认为我们不要手工设计特征, 要让网络自动学习特征, 但网络不一定在所有情况下都能学到更好的特征. 本文这个实验结果也许就是因为引入了DCT这种具有inductive bias的特征得到的gain.<br>
+对比1,3行, 当输入是<code>DCT-192</code>时, Top-1提升了约 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>0.3</mn><mi mathvariant="normal">%</mi></mrow><annotation encoding="application/x-tex">0.3\%</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.80556em;vertical-align:-0.05556em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">3</span><span class="mord">%</span></span></span></span>, 文中没有对此的分析, 我个人猜测是因为DCT作为一种手工设计的特征, 在这个任务中取得了比学习的方法的更好的效果. 理论上来说, 自深度网络开始流行以来, 大家都认为我们不要手工设计特征, 要让网络自动学习特征, 但网络不一定在所有情况下都能学到更好的特征. 本文这个实验结果也许就是因为引入了DCT这种具有inductive bias的特征得到的gain.<br>
 其他的结果, 文中分析得也比较清晰了, <code>DCT-24</code>和<code>DCT-48</code>也能得到和<code>DCT-192</code>差不多的结果, 对比通道选择的Heatmap数一数也可以知道, 如果通道低于24, 性能就要开始明显下降了.</p>
 <h3 id="comments">Comments</h3>
 <p>可能有的人看完文章会觉得文中与Baseline方法的对比不够公平. 应该将Baseline的输入也扩大到4x面积, 然后接一层Conv, 再通过selection的方法丢掉一些通道. 不过这就不是本文的setting了. 本文claim的就是要输入更大的图, 通过压缩, 使得网络能够handle大的图. DCT只是一种手段, 刚刚提到的也许是另一种可行的手段. 本文不是要去说DCT比学习的特征更好, 不过如果能做一下这个分析可能会更完善.</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Test The Theme]]></title>
-        <id>https://www.zhe-zhang.com/paper-reading/post/test-the-theme/</id>
-        <link href="https://www.zhe-zhang.com/paper-reading/post/test-the-theme/">
-        </link>
-        <updated>2020-03-14T02:20:22.000Z</updated>
-        <content type="html"><![CDATA[<h1 id="this-is-paper-title">This is paper title</h1>
-<h2 id="motivation">Motivation</h2>
-<h2 id="method">Method</h2>
-<p>Formula 1:<br>
-This is inline <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi><mo>=</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">x=y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">x</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span></span></span></span></p>
-<p>Let's see how multi-line formula works<br>
-use <code>\\</code> to start with new line</p>
-<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>y</mi><mo>=</mo><mi>x</mi><mspace linebreak="newline"></mspace><msup><mi>y</mi><mi>x</mi></msup><mo>=</mo><msup><mi>e</mi><mi>x</mi></msup></mrow><annotation encoding="application/x-tex">y=x \\
-
-y^x = e^x
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">x</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.9088319999999999em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7143919999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">x</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.7143919999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7143919999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">x</span></span></span></span></span></span></span></span></span></span></span></span></p>
-<h2 id="code">Code</h2>
-<pre><code class="language-python">import os
-import sys
-import numpy as np
-
-def func(x):
-    y = x**2  # square
-</code></pre>
-<pre><code class="language-bash">df
-du
-find . -name 'xyz'
-
-</code></pre>
-<pre><code class="language-yaml">xy:
-  - 123
-  - 456
-
-</code></pre>
 ]]></content>
     </entry>
     <entry>
