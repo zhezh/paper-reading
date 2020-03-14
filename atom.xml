@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>https://zhe-zhang.com/paper-reading</id>
+    <id>https://www.zhe-zhang.com/paper-reading</id>
     <title>Paper Reading</title>
-    <updated>2020-03-14T03:32:44.575Z</updated>
+    <updated>2020-03-14T03:36:28.580Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="https://zhe-zhang.com/paper-reading"/>
-    <link rel="self" href="https://zhe-zhang.com/paper-reading/atom.xml"/>
+    <link rel="alternate" href="https://www.zhe-zhang.com/paper-reading"/>
+    <link rel="self" href="https://www.zhe-zhang.com/paper-reading/atom.xml"/>
     <subtitle>论文阅读记录</subtitle>
-    <logo>https://zhe-zhang.com/paper-reading/images/avatar.png</logo>
-    <icon>https://zhe-zhang.com/paper-reading/favicon.ico</icon>
+    <logo>https://www.zhe-zhang.com/paper-reading/images/avatar.png</logo>
+    <icon>https://www.zhe-zhang.com/paper-reading/favicon.ico</icon>
     <rights>All rights reserved 2020, Paper Reading</rights>
     <entry>
         <title type="html"><![CDATA[Test The Theme]]></title>
-        <id>https://zhe-zhang.com/paper-reading/post/test-the-theme/</id>
-        <link href="https://zhe-zhang.com/paper-reading/post/test-the-theme/">
+        <id>https://www.zhe-zhang.com/paper-reading/post/test-the-theme/</id>
+        <link href="https://www.zhe-zhang.com/paper-reading/post/test-the-theme/">
         </link>
         <updated>2020-03-14T02:20:22.000Z</updated>
         <content type="html"><![CDATA[<h1 id="this-is-paper-title">This is paper title</h1>
@@ -49,8 +49,8 @@ find . -name 'xyz'
     </entry>
     <entry>
         <title type="html"><![CDATA[Hello Gridea]]></title>
-        <id>https://zhe-zhang.com/paper-reading/post/hello-gridea/</id>
-        <link href="https://zhe-zhang.com/paper-reading/post/hello-gridea/">
+        <id>https://www.zhe-zhang.com/paper-reading/post/hello-gridea/</id>
+        <link href="https://www.zhe-zhang.com/paper-reading/post/hello-gridea/">
         </link>
         <updated>2018-12-11T16:00:00.000Z</updated>
         <summary type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
