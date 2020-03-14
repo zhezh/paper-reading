@@ -68,7 +68,7 @@ DAMO Academy, Aliba...">
           <img src="https://www.zhe-zhang.com/paper-reading/post-images/20200314-learning-in-the-frequency-domain-cvpr-2020.png" alt="Learning in the Frequency Domain (CVPR 2020)" class="block w-full mb-8">
         
         <div class="mb-8 flex flex-wrap">
-          <div class="text-gray-400 text-sm mr-4">2020-03-14 · 2 min read</div>
+          <div class="text-gray-400 text-sm mr-4">2020-03-14 · 5 min read</div>
           
             <a href="https://www.zhe-zhang.com/paper-reading/tag/Rjl6mfECN/" class="text-gray-700 text-sm border-b-2 border-dotted border-gray-200 hover:border-gray-600 transition-all duration-100 inline-flex mr-2">
               <i class="ri-hashtag"></i>
@@ -97,7 +97,37 @@ Arizona State University</p>
 </blockquote>
 <h2 id="overview">Overview</h2>
 <p>由于GPU设备Memory的限制, 当前视觉任务模型中, 输入图像的尺寸较小. 这限制了模型性能, 本文提出了一种通过图像压缩的方法, 来增大深度神经网络实际的输入图像尺寸的方法. 具体实现是在频率域上对图像进行频域变换, 然后将图像的频域特征输入给神经网络. 然后使用了一种结合了重参数化方法的SE block的模块自适应地学习哪些频率对于特定的视觉任务比较有效. 最后, 基于在数据集层面的统计特征, 选出最有效的 N个频率, 丢掉其余频率的数据, 实现对输入数据的压缩, 并且不会有性能损失. 文章展示并验证了通过压缩的方法将输入图像的尺寸变大, 从而实现最终性能提升的思路.</p>
-<figure data-type="image" tabindex="1"><img src="https://www.zhe-zhang.com/paper-reading/post-images/20200314-learning-in-the-frequency-domain-cvpr-2020/learn-freq-domain-input.png" alt="Input Compression" loading="lazy"></figure>
+<!-- more -->
+<h2 id="method">Method</h2>
+<h3 id="data-pre-processing-in-the-frequency-domain">Data Pre-processing in the Frequency Domain</h3>
+<p><img src="https://www.zhe-zhang.com/paper-reading/post-images/1584167531663.png" alt="PreparingInput" loading="lazy"><br>
+图像输入到神经网络前的预处理步骤如图所示, 主要包括:</p>
+<ul>
+<li>从原图中裁剪出或将原图调整为固定输入尺寸的图像</li>
+<li>将图像由RGB色域转换到YCbCr色域, 本质上是线性变换</li>
+<li>将Y, Cb, Cr通道分别通过DCT变换到频率域, 本文使用<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>8</mn><mo>×</mo><mn>8</mn></mrow><annotation encoding="application/x-tex">8\times 8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">8</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">8</span></span></span></span>的核, 与JPEG压缩使用的是相同大小的核, 相当于过了层 channel数为 64 的 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>8</mn><mo>×</mo><mn>8</mn></mrow><annotation encoding="application/x-tex">8\times 8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">8</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">8</span></span></span></span> / stride 8 的卷积. 经过DCT后边长变为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mfrac><mn>1</mn><mn>8</mn></mfrac></mrow><annotation encoding="application/x-tex">\frac{1}{8}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.190108em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">8</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>, 通道数变为 64x.</li>
+<li>通过动态或静态的方式选取若干通道, 拼接成一个新的tensor. 这里注意下图中 Y 通道选取了2个channel, Cb和Cr通道都只留了1个channel, 不是图画错了, 而是通道选择在3路中是独立的, 最终实验结果Y通道留下的channel更多</li>
+<li>最后, 基于预计算的整个数据集统计的均值和方差去normalize每一张图</li>
+</ul>
+<h3 id="learning-based-frequency-channel-selection">Learning-based Frequency Channel Selection</h3>
+<p><img src="https://www.zhe-zhang.com/paper-reading/post-images/1584168809346.png" alt="" loading="lazy"><br>
+由于selection这个操作不可微, 这里使用了Gumbel Trick对selection的操作进行重参数化, 使得操作变得可微分. 该操作在NAS等领域已有很多应用, 这里就不详细说了.<br>
+需要注意的是由<code>Tensor 3</code>变为<code>Tensor 4</code>的时候, 乘以了两个可学习的参数, 来确定某一个channel保留的概率, 经过与作者确认, 这里使用一个参数也是可以实现的.<br>
+最后, loss中也加入了channel selection 的约束, 鼓励网络丢掉channel, 避免出现大量全都保留的情况.</p>
+<h3 id="static-frequency-channel-selection">Static Frequency Channel Selection</h3>
+<p><img src="https://www.zhe-zhang.com/paper-reading/post-images/1584169150720.png" alt="" loading="lazy"><br>
+在输入是full channel的情况下, 训练得到模型, 然后在整个数据集上统计得到所有channel保留的概率, 得到以上的Heatmap. 可以发现:</p>
+<ul>
+<li>保留的channel基本都是低频的</li>
+<li>亮度通道Y保留的比浓度通道要多</li>
+<li>对于不同的视觉任务, 保留的通道的特征差不多(上下两行差不多)</li>
+</ul>
+<h3 id="experiment-results">Experiment Results</h3>
+<p><img src="https://www.zhe-zhang.com/paper-reading/post-images/1584169474438.png" alt="" loading="lazy"><br>
+对比1,3行, 当输入是DCT-192时, Top-1提升了约 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>0.3</mn><mi mathvariant="normal">%</mi></mrow><annotation encoding="application/x-tex">0.3\%</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.80556em;vertical-align:-0.05556em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">3</span><span class="mord">%</span></span></span></span>, 文中没有对此的分析, 我个人猜测是因为DCT作为一种手工设计的特征, 在这个任务中取得了比学习的方法的更好的效果. 理论上来说, 自深度网络开始流行以来, 大家都认为我们不要手工设计特征, 要让网络自动学习特征, 但网络不一定在所有情况下都能学到更好的特征. 本文这个实验结果也许就是因为引入了DCT这种具有inductive bias的特征得到的gain.<br>
+其他的结果, 文中分析得也比较清晰了, <code>DCT-24</code>和<code>DCT-48</code>也能得到和<code>DCT-192</code>差不多的结果, 对比通道选择的Heatmap数一数也可以知道, 如果通道低于24, 性能就要开始明显下降了.</p>
+<h3 id="comments">Comments</h3>
+<p>可能有的人看完文章会觉得文中与Baseline方法的对比不够公平. 应该将Baseline的输入也扩大到4x面积, 然后接一层Conv, 再通过selection的方法丢掉一些通道. 不过这就不是本文的setting了. 本文claim的就是要输入更大的图, 通过压缩, 使得网络能够handle大的图. DCT只是一种手段, 刚刚提到的也许是另一种可行的手段. 本文不是要去说DCT比学习的特征更好, 不过如果能做一下这个分析可能会更完善.</p>
 
         </div>
         <!-- Share to Twitter, Weibo, Telegram -->
@@ -142,6 +172,15 @@ Arizona State University</p>
 <li>
 <ul>
 <li><a href="#overview">Overview</a></li>
+<li><a href="#method">Method</a>
+<ul>
+<li><a href="#data-pre-processing-in-the-frequency-domain">Data Pre-processing in the Frequency Domain</a></li>
+<li><a href="#learning-based-frequency-channel-selection">Learning-based Frequency Channel Selection</a></li>
+<li><a href="#static-frequency-channel-selection">Static Frequency Channel Selection</a></li>
+<li><a href="#experiment-results">Experiment Results</a></li>
+<li><a href="#comments">Comments</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
