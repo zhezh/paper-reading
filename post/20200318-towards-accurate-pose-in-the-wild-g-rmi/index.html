@@ -104,7 +104,7 @@ George Papandreou, Tyler Zhu, Nori Kanazawa, Alexander Toshev, Jonathan Tompson.
           
         </div>
         <div class="markdown mb-8" v-pre>
-          <p><strong>Goal</strong><br>
+		    <p><strong>Goal</strong><br>
 解析文中令人费解的霍夫投票公式</p>
 <!-- more -->
 <p>文章链接: <a href="https://arxiv.org/abs/1701.01779">arXiv</a><br>
@@ -135,6 +135,7 @@ Offset的ground-truth如上图的最右子图. Offset有两个channels, 这里�
 <figure data-type="image" tabindex="2"><img src="https://www.zhe-zhang.com/paper-reading/post-images/1584520345265.png" alt="" loading="lazy"></figure>
 <h2 id="comments">Comments</h2>
 <p>这篇文章提出的霍夫投票的思路得到refined关键点位置其实很有意思. 只通过heatmap, 由于降采样导致的量化误差很大, 会影响最终关键点位置的精度. 如果在全图上用回归的方法找关键点位置, 虽然理论上可以做到无限精度, 但是实际网络很难训练好. 本文通过heatmap的方式找到关键点所在的大概位置, 然后在一个较小的区域内用回归的方法去找更精细的关键点位置, 结合了以上两种方式的优点. 后续也有一些工作采取了类似的做法, 比如PIFPAF.</p>
+			
 
         </div>
         <!-- Share to Twitter, Weibo, Telegram -->

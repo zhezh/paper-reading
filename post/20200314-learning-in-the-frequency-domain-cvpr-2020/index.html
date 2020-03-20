@@ -102,7 +102,7 @@ Kai Xu, Minghai Qin, Fei Sun, Yuhao Wang...">
           
         </div>
         <div class="markdown mb-8" v-pre>
-          <p><strong>Highlight</strong><br>
+		    <p><strong>Highlight</strong><br>
 通过压缩神经网络的输入, 增大输入图片的尺寸, 从而提升视觉任务的性能.</p>
 <!-- more -->
 <p>文章链接: <a href="https://arxiv.org/abs/2002.12416">arXiv</a><br>
@@ -145,6 +145,7 @@ Arizona State University</p>
 其他的结果, 文中分析得也比较清晰了, <code>DCT-24</code>和<code>DCT-48</code>也能得到和<code>DCT-192</code>差不多的结果, 对比通道选择的Heatmap数一数也可以知道, 如果通道低于24, 性能就要开始明显下降了.</p>
 <h2 id="comments">Comments</h2>
 <p>可能有的人看完文章会觉得文中与Baseline方法的对比不够公平. 应该将Baseline的输入也扩大到4x面积, 然后接一层Conv, 再通过selection的方法丢掉一些通道. 不过这就不是本文的setting了. 本文claim的就是要输入更大的图, 通过压缩, 使得网络能够handle大的图. DCT只是一种手段, 刚刚提到的也许是另一种可行的手段. 本文不是要去说DCT比学习的特征更好, 不过如果能做一下这个分析可能会更完善.</p>
+			
 
         </div>
         <!-- Share to Twitter, Weibo, Telegram -->
